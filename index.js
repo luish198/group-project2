@@ -1,33 +1,19 @@
-/* Checlist for the project:
-- add funtion
-- delete function
-- modify function
-- mark/unmark completed task 
-*/
-
-let toDoList = [];
 let toDoInput = "";
 let idCounter = 0;
-
-/*let itemList = {
-  task: toDoInput,
-  /*id: counterUpdate(idCounter),*/
-/*id: idCounter,
-  done: false
-};*/
 
 let addToDoListItem = (task) => {
   toDoList.push({ id: idCounter++, task: task, done: false });
 };
+
+let toDoList = JSON.parse(localStorage.getItem('textinput')) || [];
 
 //update HTML function
 const updateHTML = () => {
   let htmlTasks = toDoList
     .map((item, i) => {
       return `<li id="${item.id}">
-      <input ${item.done && "checked"} type ="checkbox" class="check" id="${
-        item.id
-      }" />
+      <input ${item.done && "checked"} type ="checkbox" class="check" id="${item.id
+        }" />
       ${item.done ? `<strike>${item.task}</strike>` : item.task}
       <button class="delete-item" id="${item.id}">&#128465;</button>
       </li>`;
@@ -35,10 +21,7 @@ const updateHTML = () => {
     .join("");
 
   document.querySelector("ul").innerHTML = htmlTasks;
-// add section
-
-
-
+  // add section
 
   //checkbox marked
 
@@ -90,66 +73,30 @@ addTaskButton.addEventListener("click", function (event) {
     text.value = "";
     updateHTML();
   }
+});
 
 const storageInput = document.querySelector('.storage')
 const addButton = document.querySelector('.storage-button')
-let storedInput = localStorage.getItem('textinput')
-
-if(storageInput) {
-  text = storedInput
-}
-
-storageInput.addEventListener('input', letter =>{
-  text = letter.target.value
-  console.log(text)
-})
-
-const saveToLocalStorage = () => {
-  localStorage.setItem('textinput', text)
-}
-
-addButton.addEventListener('click', saveToLocalStorage)
-
-});
-
-//Delete user input to the list
-//let deleteTaskButton = document.querySelectorAll(".delete-item");
-/*console.log(deleteTaskButton);*/
-
-/*deleteTaskButton.forEach((btn) => {
-  btn.addEventListener("click", () => {*/
-/*console.log(typeof parseInt(event.target.id));
-    alert("hello");
-    /*console.log(parseInt(event.target.item.id));
-    deleteItem(parseInt(event.target.item.id));
-    console.log(event.target.item.id);
-    deleteItem(event.target.item.id);
-    updateHTML();
     console.log(toDoList);
-  });
-});*/
+    document.querySelector("ul").innerHTML = toDoList
+      .map((i) => `<input ${i.done && "checked"} type ="checkbox" class="check" id="${i.id
+        }" />
+      ${i.done ? `<strike>${i.task}</strike>` : i.task}
+      <button class="delete-item" id="${i.id}">&#128465;</button>
+      </li>`)
+      .join("");
 
-/*const deleteButtons = document.querSelectorAll(".delete-item");
-      deleteButtons.forEach((btn) =>
-        btn.addEventListener("click", (event) => {
-          console.log(typeof parseInt(event.target.id));
-          removeItem(parseInt(event.target.id));
-          updateHTML();
-        })
-      );
-    };*/
+  storageInput.addEventListener('input', letter => {
+    text = letter.target.value
+    console.log(text)
+  })
 
-let deleteItem = (id) => {
-  toDoList = toDoList.filter((item) => item.id !== parseInt(id));
-  /*console.log(id, toDoList);*/
-};
+  const saveToLocalStorage = () => {
+    localStorage.setItem('textinput', JSON.stringify(toDoList));
+  }
+  
+  addButton.addEventListener('click', saveToLocalStorage)
 
-let crossItem = (id) => {
-  /*toDoList = toDoList.filter((item) => item.id !== parseInt(id));*/
-  /*console.log(id, toDoList);*/
-};
-
-/*const removeItem = (id) => (tasks = tasks.filter((task) => task.id !== id));*/
 
 // REPLACE ONE THING
 function updateTodoListItem(id, newText) {
@@ -158,9 +105,3 @@ function updateTodoListItem(id, newText) {
   });
   toDoList.splice(index, 1, { id: id, text: newText, done: true });
 }
-
-
-/*deleteItem(3);
-deleteItem(7);
-deleteItem(5);*/
-/*console.log(toDoList);*/
