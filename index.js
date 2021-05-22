@@ -7,7 +7,6 @@
 
 let toDoList = [];
 let toDoInput = "";
-
 let idCounter = 0;
 
 /*let itemList = {
@@ -36,6 +35,10 @@ const updateHTML = () => {
     .join("");
 
   document.querySelector("ul").innerHTML = htmlTasks;
+// add section
+
+
+
 
   //checkbox marked
 
@@ -80,14 +83,33 @@ addTaskButton.addEventListener("click", function (event) {
     });
 
   if (text.value === "") {
-    let popup = `<h1>you didn't type anything :( </h1>`;
-    document.querySelector("#popup").innerHTML = popup;
+    document.getElementById("user-input").placeholder = "type something .. ";
     updateHTML();
   } else {
     addToDoListItem(text.value);
     text.value = "";
     updateHTML();
   }
+
+const storageInput = document.querySelector('.storage')
+const addButton = document.querySelector('.storage-button')
+let storedInput = localStorage.getItem('textinput')
+
+if(storageInput) {
+  text = storedInput
+}
+
+storageInput.addEventListener('input', letter =>{
+  text = letter.target.value
+  console.log(text)
+})
+
+const saveToLocalStorage = () => {
+  localStorage.setItem('textinput', text)
+}
+
+addButton.addEventListener('click', saveToLocalStorage)
+
 });
 
 //Delete user input to the list
@@ -137,16 +159,6 @@ function updateTodoListItem(id, newText) {
   toDoList.splice(index, 1, { id: id, text: newText, done: true });
 }
 
-/*addToDoListItem("clean bathroom");
-addToDoListItem("finish phd");
-addToDoListItem("watch TV");
-addToDoListItem("finish JavaScript project");
-addToDoListItem("finish JavaScript project");
-addToDoListItem("finish JavaScript project");
-addToDoListItem("finish JavaScript project");
-addToDoListItem("finish JavaScript project");
-addToDoListItem("watch TV");
-addToDoListItem("Drink a glass of wine !!");*/
 
 /*deleteItem(3);
 deleteItem(7);
