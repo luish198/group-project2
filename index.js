@@ -1,28 +1,32 @@
 let toDoInput = "";
-let idCounter = 0;
 
 let addToDoListItem = (task) => {
   toDoList.push({ id: idCounter++, task: task, done: false });
 };
 
+let deleteItem = (id) => {
+  toDoList = toDoList.filter((item) => item.id !== parseInt(id));
+};
+
 let toDoList = JSON.parse(localStorage.getItem('textinput')) || [];
+console.log(toDoList);
+let idCounter = toDoList.length;
 
 //update HTML function
 const updateHTML = () => {
-  let htmlTasks = toDoList
-    .map((item, i) => {
+  let htmlTasks = toDoList.map((item, i) => {
       return `<li id="${item.id}">
       <input ${item.done && "checked"} type ="checkbox" class="check" id="${item.id
         }" />
       ${item.done ? `<strike>${item.task}</strike>` : item.task}
-      <button class="delete-item" id="${item.id}">&#128465;</button>
+      <button class="delete-item" id="${item.id}">&#10006;</button>
       </li>`;
     })
-    .join("");
+    .join(""); 
 
   document.querySelector("ul").innerHTML = htmlTasks;
   // add section
-
+  
   //checkbox marked
 
   const checkButtons = document.querySelectorAll(".check");
@@ -37,16 +41,20 @@ const updateHTML = () => {
           : item;
       });
       updateHTML();
+      saveToLocalStorage();
     })
   );
 
   const deleteButtons = document.querySelectorAll(".delete-item");
+
   deleteButtons.forEach((btn) =>
     btn.addEventListener("click", (event) => {
       deleteItem(parseInt(event.target.id));
       updateHTML();
+      saveToLocalStorage();
     })
   );
+  console.log(toDoList);
 };
 
 //adding user input to the list
@@ -74,17 +82,19 @@ addTaskButton.addEventListener("click", function (event) {
     updateHTML();
   }
 });
+updateHTML();
+
 
 const storageInput = document.querySelector('.storage')
 const addButton = document.querySelector('.storage-button')
-    console.log(toDoList);
-    document.querySelector("ul").innerHTML = toDoList
+     /*document.querySelector("ul").innerHTML = toDoList
       .map((i) => `<input ${i.done && "checked"} type ="checkbox" class="check" id="${i.id
         }" />
       ${i.done ? `<strike>${i.task}</strike>` : i.task}
-      <button class="delete-item" id="${i.id}">&#128465;</button>
+      <button class="delete-item" id="${i.id}">&#10006;</button>
       </li>`)
-      .join("");
+      .join(""); */
+
 
   storageInput.addEventListener('input', letter => {
     text = letter.target.value
@@ -92,9 +102,8 @@ const addButton = document.querySelector('.storage-button')
   })
 
   const saveToLocalStorage = () => {
-    localStorage.setItem('textinput', JSON.stringify(toDoList));
+    localStorage.setItem('textinput', JSON.stringify(toDoList)); 
   }
-  
   addButton.addEventListener('click', saveToLocalStorage)
 
 
